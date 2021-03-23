@@ -7,7 +7,7 @@ public class SaveButton extends UIButton{      //The SaveButton class will be a 
       
     protected void OnClick(){      //The save button will override the OnClick method, so that it will always save the drawing when clicked
         print("CLICK");
-        save("fish.png"); 
+        save("desenhoteste.png"); 
     }
 
 
