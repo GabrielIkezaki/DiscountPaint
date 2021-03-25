@@ -3,8 +3,9 @@ public class UIButton{          //The button class will be a parent. Every butto
   String text;        //This text will be displayed inside the button
   int xPos, yPos, xRect, yRect;      //xPos, yPos = central X and Y coordinates of the button || xRect,yRect = the length and width of the button
   color borderColor, fillColor;
-  
-  public UIButton(int tempXPos, int tempYPos, int tempXRect, int tempYRect, color tempBorder, color tempFill, String tempText){        //All variables will be defined through these parameters
+  color invisible;
+  boolean isVisible = true;
+  public UIButton(int tempXPos, int tempYPos, int tempXRect, int tempYRect, color tempBorder, color tempFill, String tempText, color eraseColor){        //All variables will be defined through these parameters
     xPos = tempXPos;
     yPos = tempYPos;
     xRect = tempXRect;
@@ -14,6 +15,7 @@ public class UIButton{          //The button class will be a parent. Every butto
     fillColor = tempFill;
     
     text = tempText;
+    invisible = eraseColor;
     
     DrawButton(borderColor, fillColor);      //The DrawButton function, as implied by its name, will display the actual button on the screen, and will be called as soon as the button is first initialized
     
@@ -41,6 +43,20 @@ public class UIButton{          //The button class will be a parent. Every butto
   }
   
   void display(){
-    DrawButton(borderColor, fillColor);  
+
+      DrawButton(borderColor, fillColor);   
+    
+  }
+  
+  void Hide(){
+    DrawButton(invisible, invisible);   
+  }
+  
+  boolean isMouseOnButton(){
+    if(mouseX < (xPos + xRect) && mouseX > (xPos - xRect) && mouseY > (yPos-yRect) && mouseY<(yPos+yRect)){
+      return true;
+    }else{
+      return false;
+    }
   }
 }
