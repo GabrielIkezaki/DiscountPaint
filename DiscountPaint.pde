@@ -10,7 +10,10 @@ int prevMouseXPos, prevMouseYPos;       //These are the coordinates of the initi
 Brush currentBrush;          //This class represents all the current attributes of the brush (thickness, type, color)
 SaveButton button;                //This is the save button
 BrushButton pencilButton, eraserButton, eyedropperButton, straightLButton;        //These two buttons will change the type of the brush
+CurrentColorDisplay colorDisplay;
 UIButton[] allButtons;
+
+RGBSystem rgbSystem;
 
 void setup()
 {
@@ -21,12 +24,15 @@ void setup()
   background(eraserColor);     //background color will be the same as the eraser color
   //frameRate(1040);
   
-  button = new SaveButton(650, 750, 100, 35, saveButtonBorder, saveButtonFill, "Save as PNG", eraserColor);
+  rgbSystem = new RGBSystem(700, 200, currentBrush);
+  
+  button = new SaveButton(650, 750, 100, 35, saveButtonBorder, saveButtonFill, "Save as PNG", eraserColor, rgbSystem);
   pencilButton = new BrushButton(70, 70, 30, 30, saveButtonBorder, saveButtonFill, "P", BrushType.PENCIL, currentBrush, eraserColor);      //Notice the last two parameters. This button sets the currentBrush to a PENCIL
   eraserButton = new BrushButton(70,130, 30,30, saveButtonBorder, saveButtonFill, "E", BrushType.ERASER, currentBrush, eraserColor);   //This button sets the currentBrush to an ERASER
   eyedropperButton = new BrushButton(70, 190, 30, 30, saveButtonBorder, saveButtonFill, "D", BrushType.EYEDROPPER, currentBrush, eraserColor); 
   straightLButton = new BrushButton(70, 250, 30, 30, saveButtonBorder, saveButtonFill, "S", BrushType.STRAIGHTLINE, currentBrush, eraserColor);
-  allButtons = new UIButton[]{button, pencilButton, eraserButton, eyedropperButton, straightLButton};
+  colorDisplay = new CurrentColorDisplay(700, 100, 50, 50, saveButtonBorder, saveButtonFill, "", currentBrush, eraserColor);
+  allButtons = new UIButton[]{button, pencilButton, eraserButton, eyedropperButton, straightLButton, colorDisplay};
   button.InsertArray(allButtons);
   
   
@@ -34,11 +40,11 @@ void setup()
 
 void draw(){
   
-  circle(0,0,50);
   
   if(mousePressed){          //Checks if the mouse if being pressed
     strokeWeight(currentBrush.thickness);      //Sets the thickness of each line to the thickness variable
-   
+      rgbSystem.CheckClick();
+
     //funcao de linha :))
     //line(mouseX, mouseY, pmouseX/10, pmouseY/10);
     
@@ -60,6 +66,7 @@ void draw(){
      
      for(int i = 0; i < allButtons.length;i++){
        allButtons[i].display();
+       rgbSystem.display();
      }
    // GenerateCircle(red, radius);
       
@@ -75,6 +82,10 @@ void mouseClicked(){
         clickWeight++;   //The very first click of the mouse on the straight line button won't be recorded, because the user probably doesn't want to create a line that starts on the button position     
       }
     }
+          rgbSystem.CheckClick();
+
+    
+    print(red(currentBrush.currentColor) + ", " + green(currentBrush.currentColor) + ", " + blue(currentBrush.currentColor) + "\n");
 }
 void mouseReleased(){      //This function checks if the mouse was released
    for(int i = 0; i<allButtons.length; i++){
@@ -84,6 +95,7 @@ void mouseReleased(){      //This function checks if the mouse was released
 
      allButtons[i].CheckClick();
    }
+   
 }
 
 void DrawLine(color tempColor){        //This function is responsible for drawing lines on each frame, making it look like the user is drawing a single stroke. 
@@ -94,7 +106,7 @@ void DrawLine(color tempColor){        //This function is responsible for drawin
 
 void DrawStraightLine(){
   
-  print("LINE STARTED");
+ 
   
   if(!hasPrevMousePos)        //If there are no previous mouse positions
   {
@@ -125,6 +137,7 @@ void GetPixelColor(){
     currentBrush.currentColor = color(get(mouseX, mouseY));  
   }
 }
+
 
 void keyPressed(){      //checks if any key has been pressed
     if(key == 'e'){    

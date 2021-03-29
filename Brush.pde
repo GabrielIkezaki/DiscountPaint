@@ -1,7 +1,7 @@
 public class Brush{
     BrushType currentType;        //BrushType is an enum that includes all possible brushtypes for the currentbrush
     int thickness;          //Brush thickness
-    color currentColor = color(255,0,0,255);      //The color which is currently in use
+    color currentColor = color(0,0,0,255);      //The color which is currently in use
     
     Brush(){
       currentType = BrushType.PENCIL;      //The default type of the brush is pencil. 

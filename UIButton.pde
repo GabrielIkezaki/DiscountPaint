@@ -21,7 +21,7 @@ public class UIButton{          //The button class will be a parent. Every butto
     
   }
   
-  void DrawButton(color tempBorder, color tempFill){
+  protected void DrawButton(color tempBorder, color tempFill){
     strokeWeight(5);    //The strokeWeight will define the thickness of the border of the button
     stroke(tempBorder);     //This line defines the color of the button border
     fill(tempFill);        //On the other hand, this line will color the inner part of the button
@@ -42,7 +42,7 @@ public class UIButton{          //The button class will be a parent. Every butto
     }
   }
   
-  void display(){
+  protected void display(){
 
       DrawButton(borderColor, fillColor);   
     
