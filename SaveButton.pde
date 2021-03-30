@@ -2,10 +2,12 @@ public class SaveButton extends UIButton{      //The SaveButton class will be a 
     
     UIButton[] buttonArray;
     RGBSystem rgbSystem;
+    LineThicknessSystem lineSys;
     
-    public SaveButton(int tempXPos, int tempYPos, int tempXRect, int tempYRect, color tempBorder, color tempFill, String tempText, color invis, RGBSystem rgbSys){  
+    public SaveButton(int tempXPos, int tempYPos, int tempXRect, int tempYRect, color tempBorder, color tempFill, String tempText, color invis, RGBSystem rgbSys, LineThicknessSystem tempLine){  
       super(tempXPos, tempYPos, tempXRect, tempYRect, tempBorder, tempFill, tempText, invis);      //Because the UIButton class requires parameters, we need to specify that the child class will inherit the parameters with the "super" keyword.
       rgbSystem = rgbSys;  
+      lineSys = tempLine;
 }
     //super(xPos, yPos, xRect, yRect);
       
@@ -19,12 +21,14 @@ public class SaveButton extends UIButton{      //The SaveButton class will be a 
         for(int i = 0; i < buttonArray.length; i++){
           buttonArray[i].Hide();    //The Hide function only draws a rectangle of the same color as the background over a button, it doesn't really make it transparent
           rgbSystem.Hide();
+          lineSys.Hide();
         }
         save("desenhoteste.png"); 
         
         for(int i = 0; i < buttonArray.length; i++){
           buttonArray[i].display(); //After saving, each button will draw a rectangle of its initial color
           rgbSystem.display();
+          lineSys.display();
         }
 
     }

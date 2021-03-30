@@ -14,6 +14,7 @@ CurrentColorDisplay colorDisplay;
 UIButton[] allButtons;
 
 RGBSystem rgbSystem;
+LineThicknessSystem lineSystem;
 
 void setup()
 {
@@ -25,12 +26,13 @@ void setup()
   //frameRate(1040);
   
   rgbSystem = new RGBSystem(700, 200, currentBrush);
-  
-  button = new SaveButton(650, 750, 100, 35, saveButtonBorder, saveButtonFill, "Save as PNG", eraserColor, rgbSystem);
-  pencilButton = new BrushButton(70, 70, 30, 30, saveButtonBorder, saveButtonFill, "P", BrushType.PENCIL, currentBrush, eraserColor);      //Notice the last two parameters. This button sets the currentBrush to a PENCIL
-  eraserButton = new BrushButton(70,130, 30,30, saveButtonBorder, saveButtonFill, "E", BrushType.ERASER, currentBrush, eraserColor);   //This button sets the currentBrush to an ERASER
-  eyedropperButton = new BrushButton(70, 190, 30, 30, saveButtonBorder, saveButtonFill, "D", BrushType.EYEDROPPER, currentBrush, eraserColor); 
-  straightLButton = new BrushButton(70, 250, 30, 30, saveButtonBorder, saveButtonFill, "S", BrushType.STRAIGHTLINE, currentBrush, eraserColor);
+  lineSystem = new LineThicknessSystem(70, 20, currentBrush);
+
+  button = new SaveButton(650, 750, 100, 35, saveButtonBorder, saveButtonFill, "Save as PNG", eraserColor, rgbSystem, lineSystem);
+  pencilButton = new BrushButton(70, 70, 30, 30, saveButtonBorder, saveButtonFill, "pencil.png", BrushType.PENCIL, currentBrush, eraserColor);      //Notice the last two parameters. This button sets the currentBrush to a PENCIL
+  eraserButton = new BrushButton(70,130, 30,30, saveButtonBorder, saveButtonFill, "eraser.png", BrushType.ERASER, currentBrush, eraserColor);   //This button sets the currentBrush to an ERASER
+  eyedropperButton = new BrushButton(70, 190, 30, 30, saveButtonBorder, saveButtonFill, "eyedropper.png", BrushType.EYEDROPPER, currentBrush, eraserColor); 
+  straightLButton = new BrushButton(70, 250, 30, 30, saveButtonBorder, saveButtonFill, "straightline.png", BrushType.STRAIGHTLINE, currentBrush, eraserColor);
   colorDisplay = new CurrentColorDisplay(700, 100, 50, 50, saveButtonBorder, saveButtonFill, "", currentBrush, eraserColor);
   allButtons = new UIButton[]{button, pencilButton, eraserButton, eyedropperButton, straightLButton, colorDisplay};
   button.InsertArray(allButtons);
@@ -44,7 +46,6 @@ void draw(){
   if(mousePressed){          //Checks if the mouse if being pressed
     strokeWeight(currentBrush.thickness);      //Sets the thickness of each line to the thickness variable
       rgbSystem.CheckClick();
-
     //funcao de linha :))
     //line(mouseX, mouseY, pmouseX/10, pmouseY/10);
     
@@ -67,6 +68,7 @@ void draw(){
      for(int i = 0; i < allButtons.length;i++){
        allButtons[i].display();
        rgbSystem.display();
+       lineSystem.display();
      }
    // GenerateCircle(red, radius);
       
@@ -75,6 +77,9 @@ void draw(){
   
 }
 void mouseClicked(){
+    lineSystem.CheckClick();
+
+  
     if(currentBrush.currentType == BrushType.STRAIGHTLINE){
       if(clickWeight > 0){    //Only if the user has already clicked on the button and THEN on the canvas will the initial point be stored  
         DrawStraightLine();
@@ -82,7 +87,7 @@ void mouseClicked(){
         clickWeight++;   //The very first click of the mouse on the straight line button won't be recorded, because the user probably doesn't want to create a line that starts on the button position     
       }
     }
-          rgbSystem.CheckClick();
+         
 
     
     print(red(currentBrush.currentColor) + ", " + green(currentBrush.currentColor) + ", " + blue(currentBrush.currentColor) + "\n");
@@ -99,9 +104,19 @@ void mouseReleased(){      //This function checks if the mouse was released
 }
 
 void DrawLine(color tempColor){        //This function is responsible for drawing lines on each frame, making it look like the user is drawing a single stroke. 
-   stroke(tempColor);    //The stroke function colors lines
-   line(mouseX, mouseY, pmouseX, pmouseY);        //This will create a line starting from the current mouse position, and ending at the mouse position from the previous frame.
     
+   boolean canDraw = true; 
+    
+   for(int i = 0; i < lineSystem.buttons.length; i++){
+     if(lineSystem.buttons[i].isMouseOnButton()){
+       canDraw = false;
+     }
+   }
+   
+   if(canDraw){
+     stroke(tempColor);    //The stroke function colors lines
+     line(mouseX, mouseY, pmouseX, pmouseY);        //This will create a line starting from the current mouse position, and ending at the mouse position from the previous frame.
+   }
 }
 
 void DrawStraightLine(){
