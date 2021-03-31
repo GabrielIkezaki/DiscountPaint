@@ -21,19 +21,19 @@ void setup()
   currentBrush = new Brush();
   currentBrush.SetType(BrushType.PENCIL);
   
-  size(800,800);        //window size
+  size(1200,800);        //window size
   background(eraserColor);     //background color will be the same as the eraser color
   //frameRate(1040);
   
-  rgbSystem = new RGBSystem(700, 200, currentBrush);
+  rgbSystem = new RGBSystem(700+400, 200, currentBrush);
   lineSystem = new LineThicknessSystem(70, 20, currentBrush);
 
-  button = new SaveButton(650, 750, 100, 35, saveButtonBorder, saveButtonFill, "Save as PNG", eraserColor, rgbSystem, lineSystem);
+  button = new SaveButton(650+400, 750, 100, 35, saveButtonBorder, saveButtonFill, "Save as PNG", eraserColor, rgbSystem, lineSystem);
   pencilButton = new BrushButton(70, 70, 30, 30, saveButtonBorder, saveButtonFill, "pencil.png", BrushType.PENCIL, currentBrush, eraserColor);      //Notice the last two parameters. This button sets the currentBrush to a PENCIL
   eraserButton = new BrushButton(70,130, 30,30, saveButtonBorder, saveButtonFill, "eraser.png", BrushType.ERASER, currentBrush, eraserColor);   //This button sets the currentBrush to an ERASER
   eyedropperButton = new BrushButton(70, 190, 30, 30, saveButtonBorder, saveButtonFill, "eyedropper.png", BrushType.EYEDROPPER, currentBrush, eraserColor); 
   straightLButton = new BrushButton(70, 250, 30, 30, saveButtonBorder, saveButtonFill, "straightline.png", BrushType.STRAIGHTLINE, currentBrush, eraserColor);
-  colorDisplay = new CurrentColorDisplay(700, 100, 50, 50, saveButtonBorder, saveButtonFill, "", currentBrush, eraserColor);
+  colorDisplay = new CurrentColorDisplay(700+400, 100, 50, 50, saveButtonBorder, saveButtonFill, "", currentBrush, eraserColor);
   allButtons = new UIButton[]{button, pencilButton, eraserButton, eyedropperButton, straightLButton, colorDisplay};
   button.InsertArray(allButtons);
   
@@ -117,6 +117,8 @@ void DrawLine(color tempColor){        //This function is responsible for drawin
      stroke(tempColor);    //The stroke function colors lines
      line(mouseX, mouseY, pmouseX, pmouseY);        //This will create a line starting from the current mouse position, and ending at the mouse position from the previous frame.
    }
+   
+   //line(mouseX, mouseY, pmouseX, pmouseY);
 }
 
 void DrawStraightLine(){
